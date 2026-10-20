@@ -10,10 +10,34 @@
     "directory": "npm-publishing-canary"
   },
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "files": ["dist", "README.md", "LICENSE"],
-  "scripts": { "build": "tsc -p tsconfig.json" },
-  "devDependencies": { "typescript": "7.0.2" },
-  "publishConfig": { "access": "public", "provenance": true }
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck:release": "tsc -p tsconfig.release.json",
+    "test:release": "node --test tests/release-candidate.test.ts tests/release-workflow.test.ts",
+    "check:release": "npm run typecheck:release && npm run test:release",
+    "release:status": "node scripts/version-release.ts --status",
+    "release:version": "node scripts/version-release.ts",
+    "release:check-pr": "node scripts/check-release-pr.ts",
+    "release:check-source": "node scripts/check-release-source.ts"
+  },
+  "devDependencies": {
+    "@agent-teams/release-checks": "0.1.0",
+    "@changesets/cli": "3.0.2",
+    "@types/node": "26.6.5",
+    "typescript": "7.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
 }
