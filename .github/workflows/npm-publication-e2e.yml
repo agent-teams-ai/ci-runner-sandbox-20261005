@@ -1,0 +1,128 @@
+name: npm publication E2E
+
+on:
+  pull_request:
+    paths: [npm-publishing-canary/**, .github/workflows/npm-publication-e2e.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: npm-publication-e2e
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    outputs:
+      archive: ${{ steps.pack.outputs.archive }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.11.1
+          package-manager-cache: false
+      - name: Compile the exact typed fixture
+        working-directory: npm-publishing-canary
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run build
+      - name: Retain an exact archive and release manifest
+        id: pack
+        working-directory: npm-publishing-canary
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/release"
+          npm pack --ignore-scripts --json --pack-destination "$RUNNER_TEMP/release" > "$RUNNER_TEMP/pack.json"
+          file=$(jq -er '.[0].filename' "$RUNNER_TEMP/pack.json")
+          hash=$(sha256sum "$RUNNER_TEMP/release/$file" | cut -d' ' -f1)
+          integrity="sha512-$(openssl dgst -sha512 -binary "$RUNNER_TEMP/release/$file" | openssl base64 -A)"
+          jq --arg repository "$GITHUB_REPOSITORY" --arg source "$GITHUB_SHA" \
+            --arg file "$file" --arg sha256 "$hash" --arg integrity "$integrity" \
+            '{schemaVersion:1,repository:$repository,source:$source,packages:[{name,version,file:$file,sha256:$sha256,integrity:$integrity}]}' \
+            package.json > "$RUNNER_TEMP/release/release.json"
+          printf 'archive=%s\n' "$file" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release/
+          if-no-files-found: error
+
+  publish:
+    needs: prepare
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      actions: write
+      id-token: write
+    uses: agent-teams-ai/.github/.github/workflows/npm-publish.yml@5b320f29184111de7b19743c110458e57d26c5d9
+    with:
+      phase: publish
+      artifact-name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+
+  verify:
+    needs: [prepare, publish]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.11.1
+          package-manager-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}-registry
+          path: registry
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}
+          path: original
+      - name: Bind registry bytes to this source, run and original archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp original/release.json registry/release.json
+          jq -e --arg repo "$GITHUB_REPOSITORY" --arg source "$GITHUB_SHA" \
+            '.schemaVersion == 1 and .repository == $repo and .source == $source and (.packages | length == 1)' original/release.json
+          jq -e --slurpfile manifest original/release.json --arg run "$GITHUB_RUN_ID" \
+            '. == ($manifest[0] + {complete:true,runId:$run,candidateTag:("candidate-run-" + $run)})' registry/receipt.json
+          file=$(jq -er '.packages[0].file' original/release.json)
+          [[ "$file" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*\.tgz$ && "$file" != *..* ]]
+          cmp "original/$file" "registry/$file"
+          test "$(sha256sum "registry/$file" | cut -d' ' -f1)" = "$(jq -r '.packages[0].sha256' original/release.json)"
+          test "sha512-$(openssl dgst -sha512 -binary "registry/$file" | openssl base64 -A)" = "$(jq -r '.packages[0].integrity' original/release.json)"
+      - name: Typecheck and execute an installed registry consumer
+        env:
+          ARCHIVE: ${{ needs.prepare.outputs.archive }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$PWD/registry/$ARCHIVE"
+          consumer="$RUNNER_TEMP/consumer"
+          mkdir -p "$consumer"
+          printf '{"private":true,"type":"module"}\n' > "$consumer/package.json"
+          cp npm-publishing-canary/consumer.ts "$consumer/consumer.ts"
+          cd "$consumer"
+          npm install --ignore-scripts --no-audit --no-fund "$archive" typescript@7.0.2
+          node node_modules/typescript/bin/tsc --strict --target ES2022 --module NodeNext \
+            --moduleResolution NodeNext --outDir out consumer.ts
+          node out/consumer.js
+
+  promote:
+    needs: verify
+    permissions:
+      contents: read
+      actions: write
+      id-token: write
+    uses: agent-teams-ai/.github/.github/workflows/npm-publish.yml@5b320f29184111de7b19743c110458e57d26c5d9
+    with:
+      phase: promote
+      artifact-name: npm-release-${{ github.run_id }}-${{ github.run_attempt }}

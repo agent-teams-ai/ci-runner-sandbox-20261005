@@ -1,0 +1,19 @@
+{
+  "name": "@agent-teams/npm-publishing-canary",
+  "version": "0.0.1",
+  "description": "Unsupported disposable fixture for organization npm OIDC publication qualification",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agent-teams-ai/ci-runner-sandbox-20261005.git",
+    "directory": "npm-publishing-canary"
+  },
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "scripts": { "build": "tsc -p tsconfig.json" },
+  "devDependencies": { "typescript": "7.0.2" },
+  "publishConfig": { "access": "public", "provenance": true }
+}
