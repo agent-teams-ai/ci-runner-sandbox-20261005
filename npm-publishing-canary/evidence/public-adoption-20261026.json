@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-26",
+  "repository": "agent-teams-ai/ci-runner-sandbox-20261005",
+  "sourceParent": "9e37cf964bb42c6e8f64333dbd0f03f85ec776c8",
+  "remoteMainObserved": "d07cd5932b6c7df7ac62a941744309f867534020",
+  "package": {
+    "name": "@agent-teams/release-checks",
+    "version": "0.1.0",
+    "resolved": "https://registry.npmjs.org/@agent-teams/release-checks/-/release-checks-0.1.0.tgz",
+    "integrity": "sha512-bspWdQYc85GCvmR6fFn1wffHk6ZNRlY7ox288X7zN6yfzXbEE+a4WVPa3FU3TCaiZ6e2dqsiutgR3V0gZTPXjw=="
+  },
+  "qualifiedTools": {
+    "node": "26.11.1",
+    "npm": "11.20.0",
+    "typescript": "7.0.2",
+    "changesets": "3.0.2",
+    "typesNode": "26.6.5"
+  },
+  "lockGeneration": "npm install --package-lock-only --ignore-scripts --no-audit --no-fund --save-dev --save-exact @agent-teams/release-checks@0.1.0",
+  "lockDiffVerification": "deep equality to parent lock after removing only added root devDependency and leaf package record; no other graph drift",
+  "checks": {
+    "npmCi": "passed; scripts disabled,45 packages",
+    "strictTypecheck": "passed",
+    "build": "passed",
+    "releaseTests": {
+      "passed": 19,
+      "failed": 2,
+      "total": 21,
+      "durationMilliseconds": 158478.315167,
+      "publicInstalledConformanceCasesPassed": 12,
+      "meaningfulRejection": "passed: current-base replay/publication admission rejects manifest tampering and independently replayed changelog tampering; workflow test verifies admission before compile/pack and dependent publisher",
+      "failures": [
+        {
+          "test": "real nested Changesets patch and npm root-lock synchronization preserve the whole repository",
+          "cause": "macOS /var temp alias differs from realpath /private/var; focused canonical TMPDIR rerun recorded separately",
+          "focusedResult": "Canonical TMPDIR diagnostic did not requalify the case: nonstandard launch failed npm custody/engine binding. No successful rerun claimed; use documented native CI."
+        },
+        {
+          "test": "actual v3 intent discovery retains source instruction docs and rejects their candidate edits",
+          "cause": "macOS case-insensitive filesystem cannot hold distinct AGENTS.md and agents.md; clean accepted source check rejected before candidate generation"
+        }
+      ]
+    },
+    "focusedDiagnostics": [
+      {
+        "command": "canonical TMPDIR; node --test --test-name-pattern=real nested Changesets patch",
+        "outcome": "rejected before candidate capture: Run this Host through its npm script so the exact npm CLI is captured",
+        "qualifiesFirstFailure": false
+      },
+      {
+        "command": "canonical TMPDIR; npm exec -- node --test --test-name-pattern=real nested Changesets patch",
+        "outcome": "rejected engine binding: Release generation requires Node 26.11.1, Changesets 3.0.2 and npm 11.20.0",
+        "qualifiesFirstFailure": false
+      }
+    ]
+  },
+  "sourceSha256": {
+    "package.json": "85d81bdbffaa9b918d930f1cc896d34c7cfda411fe6c67bd033e8c29099a94f6",
+    "package-lock.json": "5412832a4877809280b10018dafc84badb93599543cda60e5f298b924933fa43",
+    "scripts/release-candidate.ts": "f00478d581565cedd6862661f0dff18566aa7d506f12808e28ec48a2f48dfbe8",
+    "scripts/release-pr.ts": "083ae17e4e487e4908bf8e64f1813fbf072a55148b1a7eb8ba74f65a4b2f3876",
+    "scripts/check-release-source.ts": "7dbacff7b0714b97b8f95c72f1c457afe5c0b6aefcf5b54a9f8ef340de1b684f",
+    "scripts/check-release-pr.ts": "10658c2a15d5864a235d0fc6e4faa055dd78f82381cb52735763ef938fd08309",
+    "tests/release-candidate.test.ts": "6fec16feb1e8c73827f385c5c151eec84fb43c27cf1fca68e64b404edf3007da",
+    "tests/release-workflow.test.ts": "b59a9ed6a3b390b41cd606b6f6af0fa7d195b8bf1bbf31e5bee301ed6b54d73c"
+  },
+  "historicalEvidence": "local-installed-qualification.json and intent-docs-qualification.json preserved unchanged; not relabeled public qualification",
+  "pending": [
+    "full native Linux case-sensitive suite/CI",
+    "owner implementation PR and merge",
+    "generated Changesets release PR/review/merge",
+    "fresh canary registry publication and hosted consumer",
+    "latest-selector fresh install",
+    "exact archive replay without duplicate effects"
+  ],
+  "registryEffects": "none",
+  "unchangedTestInventory": {
+    "total": 21,
+    "publicConformance": 12,
+    "fixtureAndWorkflowTests": 9,
+    "sourceEdits": false,
+    "skipsAdded": false
+  }
+}

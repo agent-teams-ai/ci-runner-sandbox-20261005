@@ -1,8 +1,11 @@
 # Fresh release candidate E2E
 
-Status: source and local installed-candidate qualification complete. Public `@agent-teams/release-checks@0.1.0`,
-the final npm lock, reviewed owner PRs, hosted CI and fresh publication remain
-pending. The earlier publisher run is not evidence for this complete chain.
+Status (2026-10-26): public `@agent-teams/release-checks@0.1.0` is available and
+the nested npm lock now adopts its actual registry bytes. The current public-input
+qualification is recorded in [the adoption evidence](evidence/public-adoption-20261026.json).
+Reviewed owner implementation/release PRs, native CI, fresh canary publication,
+latest-selector installation and exact-archive replay remain pending. The earlier
+publisher run is not evidence for this complete chain.
 
 The retained [local qualification](evidence/local-installed-qualification.json)
 records strict TypeScript and all 20 tests, the actual nested engine-generated
@@ -76,9 +79,11 @@ Run these commands **inside `npm-publishing-canary/`**:
 | `npm run release:check-source` | In manual current-main publication, verify the actual owner release PR squash and independently replay its single parent before packing |
 | `npm run build` | Compile the original canary package |
 
-The production metadata deliberately names exact `release-checks@0.1.0` before
-its public availability. Do not commit a made-up integrity record or treat
-`npm ci` as qualified until the real registry pin and lock are installed. A
+The development metadata and npm lock name exact public `release-checks@0.1.0`
+with its actual registry integrity. The 2026-10-26 adoption evidence qualifies
+`npm ci`, strict typechecking, build and 19 of 21 tests on these inputs. Two
+macOS fixture limitations are retained explicitly; full case-sensitive native CI
+remains pending. A
 local `file:` dependency is permitted only inside a disposable TEST copy and is
 never production adoption evidence.
 
@@ -106,9 +111,9 @@ for uncertainty; never blindly repeat a possibly completed upload.
 
 ## Owner execution and evidence checklist
 
-1. After the supported public library exists, install its exact reviewed
-   `0.1.0` coordinate with npm, regenerate the real lock and verify its actual
-   registry SRI. Run `npm ci --ignore-scripts --no-audit --no-fund`,
+1. The exact reviewed public `0.1.0` coordinate and npm-generated registry lock
+   are adopted; see the 2026-10-26 evidence. For any changed final source, run
+   `npm ci --ignore-scripts --no-audit --no-fund`,
    `npm run check:release` and `npm run build` on that final source.
 2. Create the implementation owner PR. Record independent reviewer role,
    exact head and verdict, inspect its actual CI and merge with the canonical
