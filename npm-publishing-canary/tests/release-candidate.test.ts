@@ -91,6 +91,19 @@ test("an empty-only official plan performs no versioning and consumes no intent"
 });
 
 test("actual v3 intent discovery retains source instruction docs and rejects their candidate edits", t => {
+  // Keep the genuine lowercase intent separate from its uppercase instruction
+  // alias so both contracts are exercised on case-insensitive filesystems.
+  const lowercase = fixture(t);
+  writeFileSync(join(lowercase.nested, ".changeset/agents.md"), intent);
+  git(lowercase.root, "add", "--all");
+  git(lowercase.root, "commit", "-m", "test: lowercase instruction name remains an intent");
+  const lowercasePrepared = prepare({ ...lowercase, source: git(lowercase.root, "rev-parse", "HEAD") });
+  assert.deepEqual(lowercasePrepared.expected.intents.map(value => value.id).sort(), ["agents", "housekeeping", "metadata"]);
+  assert.deepEqual(lowercasePrepared.expected.plan.releases[0]?.intentIds.toSorted(), ["agents", "metadata"]);
+  versionRelease(lowercasePrepared);
+  assert.equal(existsSync(join(lowercase.nested, ".changeset/agents.md")), false);
+  inspect(lowercasePrepared);
+
   const source = fixture(t);
   const ignored = ["README.md", "readme.md", "ReadMe.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", ".hidden.md", "notes.MD", "nested/instruction.md"];
   const text = "Source instructions without changeset frontmatter.\n";
@@ -100,15 +113,12 @@ test("actual v3 intent discovery retains source instruction docs and rejects the
     writeFileSync(path, text);
   }
   git(source.root, "add", "--force", "--", ...ignored.map(name => `${releasePackageDirectory}/.changeset/${name}`));
-  // Only README is case-insensitive; this lowercase file is a genuine intent.
-  writeFileSync(join(source.nested, ".changeset/agents.md"), intent);
   git(source.root, "add", "--all");
   git(source.root, "commit", "-m", "test: actual v3 source instructions and case-sensitive intent");
   const prepared = prepare({ ...source, source: git(source.root, "rev-parse", "HEAD") });
-  assert.deepEqual(prepared.expected.intents.map(value => value.id).sort(), ["agents", "housekeeping", "metadata"]);
-  assert.deepEqual(prepared.expected.plan.releases[0]?.intentIds.toSorted(), ["agents", "metadata"]);
+  assert.deepEqual(prepared.expected.intents.map(value => value.id).sort(), ["housekeeping", "metadata"]);
+  assert.deepEqual(prepared.expected.plan.releases[0]?.intentIds.toSorted(), ["metadata"]);
   versionRelease(prepared);
-  assert.equal(existsSync(join(source.nested, ".changeset/agents.md")), false);
   for (const name of ignored) assert.equal(readFileSync(join(source.nested, ".changeset", name), "utf8"), text);
   for (const name of ["AGENTS.md", "readme.md"]) {
     const path = join(source.nested, ".changeset", name);

@@ -67,7 +67,7 @@
   },
   "historicalEvidence": "local-installed-qualification.json and intent-docs-qualification.json preserved unchanged; not relabeled public qualification",
   "pending": [
-    "full native Linux suite/CI; local fixture correction now20/21 with case-variant intent assertion pending",
+    "native owner PR CI on final exact head; local full21 suite now passes",
     "owner implementation PR and merge",
     "generated Changesets release PR/review/merge",
     "fresh canary registry publication and hosted consumer",
@@ -112,5 +112,26 @@
       },
       "currentTestSourceSha256": "9257882aa8b2e047f5f92e5d16e780b1c589444ccf1509178d161da183d63b9b"
     }
+  },
+  "casePortableFixtureQualification": {
+    "change": "Lowercase genuine agents.md intent and uppercase ignored AGENTS.md document are proven in separate owned fixtures inside the same test; all original exclusion, consumption and candidate-edit rejection assertions retained.",
+    "targeted": {
+      "command": "NODE_OPTIONS=--test-name-pattern=actual v3 intent discovery npm run test:release",
+      "passed": 3,
+      "failed": 0,
+      "durationMilliseconds": 44032.046,
+      "note": "Name pattern selected actual instruction-doc test and actual-custody test plus empty workflow-file harness."
+    },
+    "full": {
+      "command": "npm run check:release",
+      "strictTypecheck": "passed",
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "durationMilliseconds": 176755.287708
+    },
+    "productionHostChanged": false,
+    "sourceSha256": "44dca47fd69cf7dd82f9af23df86c739f74d8309a0074594d7640111068ed82e",
+    "priorFailedResultsRetained": true
   }
 }
