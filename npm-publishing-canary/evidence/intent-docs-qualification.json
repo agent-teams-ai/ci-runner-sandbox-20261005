@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-20",
+  "repository": "agent-teams-ai/ci-runner-sandbox-20261005",
+  "productionBase": "d07cd5932b6c7df7ac62a941744309f867534020",
+  "implementationWasUncommitted": true,
+  "priorQualification": {
+    "path": "local-installed-qualification.json",
+    "sha256": "22a6873031707f0541ab77559b8ee66dbe722167580618043801e73f65e66645",
+    "scope": "Historical prior-Host snapshot; its source digests are not current after this correction"
+  },
+  "changedRuntimeSource": [
+    "npm-publishing-canary/scripts/release-candidate.ts",
+    "npm-publishing-canary/tests/release-candidate.test.ts"
+  ],
+  "change": "Match the actual pinned Changesets3.0.2 direct .changeset file predicate without removing ignored docs from full source observation, input binding or protection.",
+  "actualReader": {
+    "name": "@changesets/read",
+    "version": "1.0.1",
+    "entrySha256": "eb4b62c2be86fae85743e1dfbf0b37ccea2d5a790321a96e663d9e0eca207250",
+    "predicate": {
+      "lowercaseMdSuffix": true,
+      "excludedDotPrefix": true,
+      "caseInsensitiveReadme": true,
+      "exactIgnoredDocs": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "GEMINI.md"
+      ]
+    },
+    "scannedDirectories": [
+      ".changeset",
+      ".changeset/pre"
+    ],
+    "hostAdmittedDirectory": ".changeset",
+    "hostPrereleaseBoundary": "Existing non-null preState and pre/ intent identities remain rejected; no prerelease expansion or filtered plan was introduced."
+  },
+  "releaseChecksArchive": {
+    "version": "0.0.0",
+    "sha256": "4c46ed8e2aa0cdd24e2b6b3d45acdf22f0614a777f9baccdf687f0630a55a027",
+    "integrity": "sha512-dnrvPLeH18mqancH+mH04YMcUIaAQVa2abcXxgAUYyIPKSNgpRc2a2bl2JiYxLdwoRPceUFVxJi1p4S2YL0oTw=="
+  },
+  "strictTypecheck": "passed",
+  "tests": {
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "durationMilliseconds": 63985.927397,
+    "command": "npm run check:release",
+    "execution": "Owned disposable TEST copy with the actual corrected installed archive and normal Node process isolation"
+  },
+  "addedCase": {
+    "name": "actual v3 intent discovery retains source instruction docs and rejects their candidate edits",
+    "retainedSourceFiles": [
+      "README.md",
+      "readme.md",
+      "ReadMe.md",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "GEMINI.md",
+      ".hidden.md",
+      "notes.MD",
+      "nested/instruction.md"
+    ],
+    "genuineCaseSensitiveIntent": "agents.md",
+    "rejectedCandidateDocEdits": [
+      "AGENTS.md",
+      "readme.md"
+    ]
+  },
+  "runtimeSourceSha256": {
+    "npm-publishing-canary/scripts/check-release-pr.ts": "10658c2a15d5864a235d0fc6e4faa055dd78f82381cb52735763ef938fd08309",
+    "npm-publishing-canary/scripts/check-release-source.ts": "7dbacff7b0714b97b8f95c72f1c457afe5c0b6aefcf5b54a9f8ef340de1b684f",
+    "npm-publishing-canary/scripts/release-candidate.ts": "f00478d581565cedd6862661f0dff18566aa7d506f12808e28ec48a2f48dfbe8",
+    "npm-publishing-canary/scripts/release-pr.ts": "083ae17e4e487e4908bf8e64f1813fbf072a55148b1a7eb8ba74f65a4b2f3876",
+    "npm-publishing-canary/scripts/version-release.ts": "22c52516b7827c06002390da91e8b036ae4df10ad724154c43ff4230ffadb80d",
+    "npm-publishing-canary/tests/release-candidate.test.ts": "6fec16feb1e8c73827f385c5c151eec84fb43c27cf1fca68e64b404edf3007da",
+    "npm-publishing-canary/tests/release-workflow.test.ts": "b59a9ed6a3b390b41cd606b6f6af0fa7d195b8bf1bbf31e5bee301ed6b54d73c",
+    "npm-publishing-canary/tsconfig.release.json": "f638e117640ea3668f2b8c4094aa2bed56d1e7883fc5e50ca48b79a80aa06b9d",
+    "npm-publishing-canary/.changeset/config.json": "35b155a20879070c85293e581a2a79ec1cddf90135ed587f6f475b83b671ce5e"
+  },
+  "priorPackProofDisposition": "No canary runtime, package manifest, authoritative lock or workflow changed in this follow-up. The prior complete disposable source/version/pack/install qualification is retained as evidence for its exact prior source snapshot; no new pack or public publication is claimed.",
+  "hostedCI": "pending",
+  "publicRegistryPublication": "pending",
+  "fullE2E": "pending"
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-20",
+  "repository": "agent-teams-ai/ci-runner-sandbox-20261005",
+  "acceptedSource": "d07cd5932b6c7df7ac62a941744309f867534020",
+  "implementationWasUncommitted": true,
+  "qualification": "Disposable TEST copy using actual npm installation and normal Node test isolation",
+  "tools": { "node": "26.11.1", "npm": "11.20.0", "changesets": "3.0.2", "typescript": "7.0.2" },
+  "archive": {
+    "name": "@agent-teams/release-checks",
+    "version": "0.0.0",
+    "sha256": "5c468f1721ceb04d1c909b0c6c2fc42167496f7e60703fea0dfc0a094a14fdd7",
+    "integrity": "sha512-6VizydXvjhSZkckyBgZoCdVZ0Sc8V0K6CQCFQwJwzrlqTJ1TQh35pcnMyIndnnz4JR0AcUQ5ZNo+QqISDXx7rA=="
+  },
+  "strictTypecheck": "passed",
+  "initialTests": { "passed": 13, "failed": 4, "skipped": 0 },
+  "failure": {
+    "code": "inventory.ambiguous",
+    "message": "The classified inventory must include its repository root manifest.",
+    "actualManifests": ["npm-publishing-canary/package.json"],
+    "actualRootManifestExists": false,
+    "scope": "A valid nested single-package repository was rejected by an unconditional root-manifest requirement. Full real Git tree and nested path observations were retained.",
+    "disposition": "Reported to the library owner for a narrow topology correction and new installed-archive qualification. No synthetic root manifest or monorepo was introduced."
+  },
+  "publicRegistryPublication": "not performed",
+  "hostedCI": "not performed",
+  "fullE2E": "pending"
+}

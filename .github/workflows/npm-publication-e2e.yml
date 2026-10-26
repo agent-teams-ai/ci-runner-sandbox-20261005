@@ -2,7 +2,7 @@ name: npm publication E2E
 
 on:
   pull_request:
-    paths: [npm-publishing-canary/**, .github/workflows/npm-publication-e2e.yml]
+    paths: [npm-publishing-canary/**, .github/workflows/npm-publication-e2e.yml, .github/workflows/npm-canary-version.yml]
   workflow_dispatch:
 
 permissions:
@@ -16,20 +16,39 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
     outputs:
       archive: ${{ steps.pack.outputs.archive }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 26.11.1
           package-manager-cache: false
-      - name: Compile the exact typed fixture
+      - name: Install and qualify the exact release tooling
         working-directory: npm-publishing-canary
         run: |
           npm ci --ignore-scripts --no-audit --no-fund
+          npm run check:release
+      - name: Independently qualify the current owner release PR
+        if: github.event_name == 'pull_request' && github.head_ref == 'changeset-release/main'
+        working-directory: npm-publishing-canary
+        run: npm run release:check-pr
+      - name: Admit the exact merged candidate before creating an archive
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: npm-publishing-canary
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: npm run release:check-source
+      - name: Compile the exact typed fixture
+        working-directory: npm-publishing-canary
+        run: |
           npm run build
       - name: Retain an exact archive and release manifest
         id: pack

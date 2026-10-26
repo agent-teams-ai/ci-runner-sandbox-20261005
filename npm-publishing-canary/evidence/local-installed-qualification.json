@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-20",
+  "repository": "agent-teams-ai/ci-runner-sandbox-20261005",
+  "productionBase": "d07cd5932b6c7df7ac62a941744309f867534020",
+  "productionBranch": "feat/release-checks-e2e",
+  "implementationWasUncommitted": true,
+  "scope": "Local installed-archive qualification in an owned disposable TEST repository; not public npm or hosted E2E",
+  "tools": {
+    "node": "26.11.1",
+    "npm": "11.20.0",
+    "changesets": "3.0.2",
+    "typescript": "7.0.2"
+  },
+  "releaseChecksArchive": {
+    "version": "0.0.0",
+    "sha256": "4c46ed8e2aa0cdd24e2b6b3d45acdf22f0614a777f9baccdf687f0630a55a027",
+    "integrity": "sha512-dnrvPLeH18mqancH+mH04YMcUIaAQVa2abcXxgAUYyIPKSNgpRc2a2bl2JiYxLdwoRPceUFVxJi1p4S2YL0oTw=="
+  },
+  "strictTypecheck": "passed",
+  "tests": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "commonInstalledCases": 12,
+    "durationMilliseconds": 45035.967484
+  },
+  "runtimeSourceSha256": {
+    "npm-publishing-canary/scripts/check-release-pr.ts": "10658c2a15d5864a235d0fc6e4faa055dd78f82381cb52735763ef938fd08309",
+    "npm-publishing-canary/scripts/check-release-source.ts": "7dbacff7b0714b97b8f95c72f1c457afe5c0b6aefcf5b54a9f8ef340de1b684f",
+    "npm-publishing-canary/scripts/release-candidate.ts": "715e3659ed99dcb0da5cf47cd58ef881332bdb79bb92f1e4d7a57cb67fd2de06",
+    "npm-publishing-canary/scripts/release-pr.ts": "083ae17e4e487e4908bf8e64f1813fbf072a55148b1a7eb8ba74f65a4b2f3876",
+    "npm-publishing-canary/scripts/version-release.ts": "22c52516b7827c06002390da91e8b036ae4df10ad724154c43ff4230ffadb80d",
+    "npm-publishing-canary/tests/release-candidate.test.ts": "9a602e4850bb99226ff41f32ac5fb17612f0d9ef67790e977198473ac989b69f",
+    "npm-publishing-canary/tests/release-workflow.test.ts": "b59a9ed6a3b390b41cd606b6f6af0fa7d195b8bf1bbf31e5bee301ed6b54d73c",
+    "npm-publishing-canary/tsconfig.release.json": "f638e117640ea3668f2b8c4094aa2bed56d1e7883fc5e50ca48b79a80aa06b9d",
+    "npm-publishing-canary/.changeset/config.json": "35b155a20879070c85293e581a2a79ec1cddf90135ed587f6f475b83b671ce5e"
+  },
+  "actualGeneratedCandidate": {
+    "source": "fac67501943665e52ce18aa2794163dad0a3a300",
+    "candidate": "7295a52bd29e3981ab61a7b2f67d1b94519227f6",
+    "sourceKind": "disposable TEST commits only",
+    "beforeVersion": "0.0.2",
+    "engineVersion": "0.0.3",
+    "report": "passed",
+    "firstChangelog": "created by Changesets; no synthetic history",
+    "lockChanges": [
+      "version",
+      "packages[\"\"].version"
+    ],
+    "independentSquashParentQualification": "passed"
+  },
+  "packedConsumer": {
+    "package": "@agent-teams/npm-publishing-canary",
+    "version": "0.0.3",
+    "sha256": "214c2212edd95c0360970c2465d204381797ad18fcf796d790c32e9463eb8163",
+    "integrity": "sha512-125d2r94ITGW8aqRDfcEtuqJzWM+VR1h4OdOwWlqdgtT61n6mvo/euYDyKHCsj/h/0KwduSKKSK8Vxqx9xzcWA==",
+    "strictPublicTypecheck": "passed",
+    "consumerExecution": "passed",
+    "installedVersionAndLockIntegrity": "passed",
+    "developmentReleaseToolingNotInstalled": true,
+    "publicationEligible": false,
+    "reason": "This local TEST archive records a file dependency for candidate qualification and is not the final public-pin source archive"
+  },
+  "workflowStaticChecks": {
+    "actionlint": "1.7.12 passed",
+    "zizmor": "1.29.0 passed; offline strict collection, medium severity/confidence, no new suppressions"
+  },
+  "counterexampleDisposition": "The old installed archive rejected a valid nested inventory. The corrected archive passes nested/no-root positive and missing/extra manifest and whole-tree rejection cases. Host dictionaries also preserve the real __proto__ filename.",
+  "pending": [
+    "Exact public release-checks0.1.0 installation and authoritative lock",
+    "Final owner PR review and hosted CI",
+    "Real generated release owner PR and canonical squash merge",
+    "Fresh public npm source/run/archive readback and promotion",
+    "Installed @latest consumer and exact-archive replay evidence"
+  ]
+}
