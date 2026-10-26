@@ -3,6 +3,8 @@
 Status (2026-10-26): public `@agent-teams/release-checks@0.1.0` is available and
 the nested npm lock now adopts its actual registry bytes. The current public-input
 qualification is recorded in [the adoption evidence](evidence/public-adoption-20261026.json).
+After the fixture portability correction, strict typechecking and 20 of 21 local
+tests pass; the remaining case-variant intent test needs native Linux CI.
 Reviewed owner implementation/release PRs, native CI, fresh canary publication,
 latest-selector installation and exact-archive replay remain pending. The earlier
 publisher run is not evidence for this complete chain.
@@ -81,9 +83,9 @@ Run these commands **inside `npm-publishing-canary/`**:
 
 The development metadata and npm lock name exact public `release-checks@0.1.0`
 with its actual registry integrity. The 2026-10-26 adoption evidence qualifies
-`npm ci`, strict typechecking, build and 19 of 21 tests on these inputs. Two
-macOS fixture limitations are retained explicitly; full case-sensitive native CI
-remains pending. A
+`npm ci`, strict typechecking and build on these inputs. The original 19/21
+result and the fixture-corrected 20/21 result are retained separately; native CI
+remains pending for the case-variant intent assertion. A
 local `file:` dependency is permitted only inside a disposable TEST copy and is
 never production adoption evidence.
 

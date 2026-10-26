@@ -1,5 +1,5 @@
 import { strict as assert } from "node:assert";
-import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, renameSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { test, type TestContext } from "node:test";
@@ -21,7 +21,7 @@ const intent = '---\n"@agent-teams/npm-publishing-canary": patch\n---\n\nUpdate 
 
 type Fixture = Readonly<{ root: string; nested: string; directory: string; source: string }>;
 function fixture(t: TestContext, release = true, existingHistory = true): Fixture {
-  const directory = mkdtempSync(join(tmpdir(), "TEST-canary-fixture-"));
+  const directory = realpathSync(mkdtempSync(join(tmpdir(), "TEST-canary-fixture-")));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   const root = join(directory, "repo");
   const nested = join(root, releasePackageDirectory);
@@ -99,6 +99,7 @@ test("actual v3 intent discovery retains source instruction docs and rejects the
     mkdirSync(resolve(path, ".."), { recursive: true });
     writeFileSync(path, text);
   }
+  git(source.root, "add", "--force", "--", ...ignored.map(name => `${releasePackageDirectory}/.changeset/${name}`));
   // Only README is case-insensitive; this lowercase file is a genuine intent.
   writeFileSync(join(source.nested, ".changeset/agents.md"), intent);
   git(source.root, "add", "--all");

@@ -38,7 +38,7 @@
         },
         {
           "test": "actual v3 intent discovery retains source instruction docs and rejects their candidate edits",
-          "cause": "macOS case-insensitive filesystem cannot hold distinct AGENTS.md and agents.md; clean accepted source check rejected before candidate generation"
+          "cause": "Initial observation: Release planning requires the exact clean accepted source. Follow-up confirmed /Users/belief/.gitignore:14 ignores CLAUDE.md, so ordinary git add omitted the intended instruction file. Earlier case-insensitive-filesystem diagnosis was unproven and is withdrawn."
         }
       ]
     },
@@ -67,7 +67,7 @@
   },
   "historicalEvidence": "local-installed-qualification.json and intent-docs-qualification.json preserved unchanged; not relabeled public qualification",
   "pending": [
-    "full native Linux case-sensitive suite/CI",
+    "full native Linux suite/CI; local fixture correction now20/21 with case-variant intent assertion pending",
     "owner implementation PR and merge",
     "generated Changesets release PR/review/merge",
     "fresh canary registry publication and hosted consumer",
@@ -81,5 +81,36 @@
     "fixtureAndWorkflowTests": 9,
     "sourceEdits": false,
     "skipsAdded": false
+  },
+  "fixturePortabilityCorrection": {
+    "globalIgnoreObservation": "git check-ignore -v --no-index npm-publishing-canary/.changeset/CLAUDE.md -> /Users/belief/.gitignore:14:CLAUDE.md",
+    "changes": [
+      "Canonicalize mkdtemp fixture directory via realpathSync before constructing caller input",
+      "Force-add only exact intended instruction-document paths before fixture source commit"
+    ],
+    "productionHostChanged": false,
+    "assertionsRemoved": false,
+    "testCasesRemoved": false,
+    "globalConfigChanged": false,
+    "verification": {
+      "command": "npm run typecheck:release && npm run test:release -- --test-name-pattern=real nested Changesets patch|actual v3 intent discovery",
+      "note": "Appended name filter was not applied by this Node invocation; actual full 21-test inventory executed once. No duplicate full run.",
+      "strictTypecheck": "passed",
+      "tests": {
+        "passed": 20,
+        "failed": 1,
+        "total": 21,
+        "skipped": 0,
+        "durationMilliseconds": 107741.509
+      },
+      "canonicalTemporaryRootCase": "passed",
+      "originalDirtySourceFailure": "resolved by exact force-add of intended instruction documents",
+      "remainingFailure": {
+        "test": "actual v3 intent discovery retains source instruction docs and rejects their candidate edits",
+        "assertion": "expected intents [agents,housekeeping,metadata]; actual [housekeeping,metadata]",
+        "scope": "Distinct AGENTS.md/agents.md case variant cannot be represented by this local fixture filesystem; native Linux verification remains pending. No assertions/cases skipped or weakened."
+      },
+      "currentTestSourceSha256": "9257882aa8b2e047f5f92e5d16e780b1c589444ccf1509178d161da183d63b9b"
+    }
   }
 }
